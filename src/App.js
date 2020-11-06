@@ -1,24 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import firebase from "./sevices/firebaseService"
 
 function App() {
+  const messaging = firebase.messaging();
+    Notification.requestPermission().then((permission) => { 
+        console.log(permission) 
+        if(permission === "granted"){
+            messaging.getToken().then((currentToken) => {
+                if (currentToken) {
+                    console.log("TOKEN")
+                    console.log(currentToken);
+                } else {
+                  console.log('No Instance ID token available. Request permission to generate one.');
+
+                }
+              }).catch((err) => {
+                console.log('An error occurred while retrieving token. ', err);
+              });
+        }
+  
+    })
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>First PWA APP</h1>
+     {/* <button onClick={getConfigureNotification}>Config</button> */}
     </div>
   );
 }
